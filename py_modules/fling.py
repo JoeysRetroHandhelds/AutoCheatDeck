@@ -11,7 +11,7 @@ import zipfile
 
 BASE_URL = "https://flingtrainer.com"
 ALLOWED_HOSTS = {"flingtrainer.com", "www.flingtrainer.com"}
-USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) CheatDeck"
+USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AutoCheatDeck"
 MAX_DOWNLOAD_BYTES = 200 * 1024 * 1024
 
 _TRAINER_LINK = re.compile(r'<a[^>]+href="(https://flingtrainer\.com/trainer/[^"#]+/)"[^>]*>([^<]+)</a>')

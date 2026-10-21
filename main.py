@@ -13,7 +13,7 @@ from settings import SettingsManager  # type: ignore
 # Setup environment variables
 settingsDir = decky.DECKY_PLUGIN_SETTINGS_DIR
 loggingDir = decky.DECKY_PLUGIN_LOG_DIR
-cheatdeckHome = os.path.join(decky.DECKY_USER_HOME, "cheatdeck")
+cheatdeckHome = os.path.join(decky.DECKY_USER_HOME, "autocheatdeck")
 trainersDir = os.path.join(cheatdeckHome, "trainers")
 # Backups and update scratch space live outside the plugins folder so Decky never loads them
 updateStateDir = os.path.join(decky.DECKY_PLUGIN_RUNTIME_DIR, "update")
@@ -60,15 +60,15 @@ class DownloadTrainerOptions(typing.TypedDict):
 class Plugin:
     @classmethod
     async def _main(cls):
-        logger.info("[backend] Loading CheatDeck!")
+        logger.info("[backend] Loading AutoCheatDeck!")
 
     @classmethod
     async def _unload(cls):
-        logger.info("[backend] Unloading CheatDeck!")
+        logger.info("[backend] Unloading AutoCheatDeck!")
 
     @classmethod
     async def _uninstall(cls):
-        logger.info("[backend] Uninstalling CheatDeck!")
+        logger.info("[backend] Uninstalling AutoCheatDeck!")
 
     @classmethod
     async def read_settings(cls):

@@ -7,7 +7,7 @@ import { useSettings } from "../hooks";
 import { QrCode } from "../modals";
 import { t } from "../utils/translate";
 
-const GITHUB = "https://github.com/JoeysRetroHandhelds/CheatDeck";
+const GITHUB = "https://github.com/JoeysRetroHandhelds/AutoCheatDeck";
 
 const Content: FC = () => {
   const translator = t("CREDIT");

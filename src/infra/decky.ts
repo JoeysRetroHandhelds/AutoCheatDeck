@@ -80,7 +80,7 @@ export const browseFiles = (
 
 export const sendNotice = (msg: string) => {
   const toastData: ToastData = {
-    title: "CheatDeck",
+    title: "AutoCheatDeck",
     body: msg,
     duration: 2000,
     playSound: true,

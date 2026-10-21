@@ -66,7 +66,7 @@
     "UPDATE_CHECK": "Check for Updates",
     "UPDATE_INSTALL": "Install Update",
     "UPDATE_INSTALLING": "Installing update, Decky will restart...",
-    "UPDATE_UP_TO_DATE": "CheatDeck is up to date",
+    "UPDATE_UP_TO_DATE": "AutoCheatDeck is up to date",
     "UPDATE_CHECK_FAILED": "Could not check for updates",
     "UPDATE_FAILED": "Update failed:",
     "UPDATE_ROLLBACK": "Restore Previous Version",

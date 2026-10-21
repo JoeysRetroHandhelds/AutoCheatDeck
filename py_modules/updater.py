@@ -11,7 +11,7 @@ import urllib.parse
 import urllib.request
 import zipfile
 
-REPO = "JoeysRetroHandhelds/CheatDeck"
+REPO = "JoeysRetroHandhelds/AutoCheatDeck"
 API_URL = "https://api.github.com/repos/{}/releases/latest".format(REPO)
 ALLOWED_HOSTS = {
     "github.com",
@@ -19,7 +19,7 @@ ALLOWED_HOSTS = {
     "objects.githubusercontent.com",
     "release-assets.githubusercontent.com",
 }
-USER_AGENT = "CheatDeck-Updater"
+USER_AGENT = "AutoCheatDeck-Updater"
 MAX_DOWNLOAD_BYTES = 50 * 1024 * 1024
 
 
