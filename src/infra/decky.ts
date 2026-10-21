@@ -4,6 +4,43 @@ const getEnvironmentValue = callable<[string], string>("get_env");
 const getSettingValue = callable<[{ key: string; defaults: unknown }], unknown>("get_setting");
 const setSettingValue = callable<[{ key: string; value: unknown }], unknown>("set_setting");
 
+export interface TrainerLink {
+  url: string;
+  title: string;
+}
+
+export interface TrainerPage {
+  versions: TrainerLink[];
+  lastUpdated: string | null;
+}
+
+export interface InstalledTrainer {
+  title: string;
+  pageUrl: string;
+  path: string;
+  sha256: string;
+}
+
+export const searchTrainers = callable<[string], TrainerLink[]>("search_trainers");
+export const listTrainerVersions = callable<[string], TrainerPage>("list_trainer_versions");
+export const downloadTrainer = callable<
+  [{ appid: number; url: string; pageUrl: string; title: string }],
+  { path: string; sha256: string }
+>("download_trainer");
+export const getInstalledTrainer = callable<[number], InstalledTrainer | null>("get_installed_trainer");
+
+export interface PluginUpdateInfo {
+  current: string;
+  latest: string;
+  available: boolean;
+  notes: string;
+  hasBackup: boolean;
+}
+
+export const checkPluginUpdate = callable<[], PluginUpdateInfo>("check_plugin_update");
+export const installPluginUpdate = callable<[], string>("install_plugin_update");
+export const rollbackPluginUpdate = callable<[], void>("rollback_plugin_update");
+
 export const deckyBackend = {
   getEnvironmentValue,
 
