@@ -9,6 +9,8 @@ import urllib.parse
 import urllib.request
 import zipfile
 
+import tls
+
 BASE_URL = "https://flingtrainer.com"
 ALLOWED_HOSTS = {"flingtrainer.com", "www.flingtrainer.com"}
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AutoCheatDeck"
@@ -33,7 +35,7 @@ def _get(url: str, referer: str | None = None) -> urllib.request.addinfourl:
     if referer:
         headers["Referer"] = referer
     request = urllib.request.Request(_check_url(url), headers=headers)
-    response = urllib.request.urlopen(request, timeout=30)
+    response = urllib.request.urlopen(request, timeout=30, context=tls.create_context())
     _check_url(response.geturl())
     return response
 

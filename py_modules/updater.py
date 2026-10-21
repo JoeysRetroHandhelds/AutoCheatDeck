@@ -11,6 +11,8 @@ import urllib.parse
 import urllib.request
 import zipfile
 
+import tls
+
 REPO = "JoeysRetroHandhelds/AutoCheatDeck"
 API_URL = "https://api.github.com/repos/{}/releases/latest".format(REPO)
 ALLOWED_HOSTS = {
@@ -38,7 +40,7 @@ def _open(url: str):
     if urllib.parse.urlparse(url).hostname not in ALLOWED_HOSTS:
         raise ValueError("URL not allowed: {}".format(url))
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    response = urllib.request.urlopen(request, timeout=30)
+    response = urllib.request.urlopen(request, timeout=30, context=tls.create_context())
     if urllib.parse.urlparse(response.geturl()).hostname not in ALLOWED_HOSTS:
         raise ValueError("Redirected to disallowed host")
     return response
