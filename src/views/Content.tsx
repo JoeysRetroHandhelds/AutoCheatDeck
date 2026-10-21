@@ -2,11 +2,12 @@ import { DialogButton, Field, Navigation, PanelSection, PanelSectionRow, showMod
 import type { FC } from "react";
 import { FaGithub } from "react-icons/fa";
 
+import { PluginUpdate } from "../components";
 import { useSettings } from "../hooks";
 import { QrCode } from "../modals";
 import { t } from "../utils/translate";
 
-const GITHUB = "https://github.com/SheffeyG/CheatDeck";
+const GITHUB = "https://github.com/JoeysRetroHandhelds/CheatDeck";
 
 const Content: FC = () => {
   const translator = t("CREDIT");
@@ -19,6 +20,8 @@ const Content: FC = () => {
 
   return (
     <>
+      <PluginUpdate />
+
       <PanelSection title={t("CONTENT_SETTINGS")}>
         <PanelSectionRow>
           <ToggleField

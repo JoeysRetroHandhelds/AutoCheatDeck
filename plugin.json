@@ -1,7 +1,7 @@
 {
   "name": "CheatDeck",
   "author": "SheffeyG",
-  "flags": [],
+  "flags": [ "root" ],
   "api_version": 1,
   "publish": {
     "tags": [ "cheat", "trainer" ],

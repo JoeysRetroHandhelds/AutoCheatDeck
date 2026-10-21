@@ -49,7 +49,7 @@ jobs:
       - name: Install flake8
         run: pip install flake8
       - name: Lint backend source
-        run: flake8 --max-line-length=120 main.py
+        run: flake8 --max-line-length=120 main.py py_modules tests/test_fling.py tests/test_updater.py
 
   build-plugin:
     runs-on: ubuntu-latest
@@ -73,6 +73,7 @@ jobs:
           mkdir -p output/${{ github.event.repository.name }}/dist
           cp dist/index.js  output/${{ github.event.repository.name }}/dist
           cp main.py        output/${{ github.event.repository.name }}
+          cp -r py_modules  output/${{ github.event.repository.name }}
           cp plugin.json    output/${{ github.event.repository.name }}
           cp package.json   output/${{ github.event.repository.name }}
           cp README.md      output/${{ github.event.repository.name }}
@@ -97,6 +98,7 @@ jobs:
         run: |
           cd release
           zip -r ${{ github.event.repository.name }} *
+          sha256sum ${{ github.event.repository.name }}.zip > ${{ github.event.repository.name }}.zip.sha256
       - name: Publish to Github release
         uses: softprops/action-gh-release@v2
         with:
@@ -104,6 +106,8 @@ jobs:
           draft: false
           generate_release_notes: true
           prerelease: ${{ contains(github.ref, 'pre') }}
-          files: release/${{ github.event.repository.name }}.zip
+          files: |
+            release/${{ github.event.repository.name }}.zip
+            release/${{ github.event.repository.name }}.zip.sha256
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
