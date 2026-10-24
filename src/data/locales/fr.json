@@ -70,5 +70,6 @@
     "UPDATE_CHECK_FAILED": "Could not check for updates",
     "UPDATE_FAILED": "Update failed:",
     "UPDATE_ROLLBACK": "Restore Previous Version",
-    "UPDATE_RESTART_DESC": "Decky Loader will restart to finish."
+    "UPDATE_RESTART_DESC": "Decky Loader will restart to finish.",
+    "TRAINER_ERROR": "Trainer request failed:"
 }

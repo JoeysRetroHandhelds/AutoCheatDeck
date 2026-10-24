@@ -1,6 +1,9 @@
+import io
 import os
 import sys
+import tempfile
 import unittest
+from unittest import mock
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "py_modules"))
 
@@ -33,6 +36,52 @@ class FlingParserTest(unittest.TestCase):
             fling.list_versions("https://evil.example.com/trainer/x/")
         with self.assertRaises(ValueError):
             fling.list_versions("http://flingtrainer.com/trainer/x/")
+
+
+class FakeResponse(io.BytesIO):
+    def __init__(self, data: bytes, url: str):
+        super().__init__(data)
+        self._url = url
+
+    def geturl(self):
+        return self._url
+
+
+class SafeReplaceTest(unittest.TestCase):
+    PAGE = "https://flingtrainer.com/trainer/hades-trainer/"
+    URL = "https://flingtrainer.com/downloads/abc"
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.target = os.path.join(self.tmp.name, "trainers", "1")
+        os.makedirs(self.target)
+        with open(os.path.join(self.target, "Old Trainer.exe"), "wb") as f:
+            f.write(b"MZ old")
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def download(self, payload: bytes):
+        final = "https://flingtrainer.com/wp-content/uploads/New%20Trainer.exe"
+        with mock.patch.object(fling, "_get", return_value=FakeResponse(payload, final)):
+            return fling.download(self.URL, self.PAGE, self.target)
+
+    def test_replaces_and_cleans_up(self):
+        self.download(b"MZ new")
+        self.assertEqual(os.listdir(self.target), ["New Trainer.exe"])
+        self.assertEqual(os.listdir(os.path.dirname(self.target)), ["1"])
+
+    def test_locked_trainer_is_left_alone(self):
+        with mock.patch.object(fling.os, "rename", side_effect=PermissionError("in use")):
+            with self.assertRaisesRegex(ValueError, "Close the trainer"):
+                self.download(b"MZ new")
+        self.assertEqual(os.listdir(self.target), ["Old Trainer.exe"])
+
+    def test_unusable_download_restores_old_trainer(self):
+        with self.assertRaises(ValueError):
+            self.download(b"<html>not a trainer</html>")
+        self.assertEqual(os.listdir(self.target), ["Old Trainer.exe"])
+        self.assertEqual(os.listdir(os.path.dirname(self.target)), ["1"])
 
 
 if __name__ == "__main__":

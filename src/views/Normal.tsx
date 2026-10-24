@@ -14,9 +14,11 @@ import {
   type InstalledTrainer,
   listTrainerVersions,
   sendNotice,
+  type TrainerLink,
 } from "../infra/decky";
 import { getAppName } from "../infra/steam";
 import { FindTrainer } from "../modals";
+import { logger } from "../utils/logger";
 import { t } from "../utils/translate";
 
 const Normal: FC = () => {
@@ -44,9 +46,20 @@ const Normal: FC = () => {
     showModal(<FindTrainer appid={appid} gameName={getAppName(appid)} onInstalled={onTrainerInstalled} />);
   };
 
+  const reportTrainerError = (e: unknown) => {
+    logger.error("Trainer request failed:", e);
+    sendNotice(`${t("TRAINER_ERROR")} ${e}`);
+  };
+
   const handleCheckUpdate = async () => {
     if (!installed) return;
-    const latest = (await listTrainerVersions(installed.pageUrl)).versions[0];
+    let latest: TrainerLink | undefined;
+    try {
+      latest = (await listTrainerVersions(installed.pageUrl)).versions[0];
+    } catch (e) {
+      reportTrainerError(e);
+      return;
+    }
     if (!latest || latest.title === installed.title) {
       sendNotice(t("TRAINER_UP_TO_DATE"));
       return;
@@ -57,13 +70,17 @@ const Normal: FC = () => {
         strDescription={latest.title}
         strOKButtonText={t("TRAINER_DOWNLOAD")}
         onOK={async () => {
-          const result = await downloadTrainer({
-            appid,
-            url: latest.url,
-            pageUrl: installed.pageUrl,
-            title: latest.title,
-          });
-          onTrainerInstalled(result.path);
+          try {
+            const result = await downloadTrainer({
+              appid,
+              url: latest.url,
+              pageUrl: installed.pageUrl,
+              title: latest.title,
+            });
+            onTrainerInstalled(result.path);
+          } catch (e) {
+            reportTrainerError(e);
+          }
         }}
       />,
     );
